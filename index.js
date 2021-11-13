@@ -1,4 +1,5 @@
 const fs = require('fs');
+const keepAlive = require('./server');
 
 require('dotenv').config();
 const TOKEN = process.env.TOKEN;
@@ -22,4 +23,5 @@ for (const file of eventFiles) {
    }
 }
 
+keepAlive();
 client.login(TOKEN);
