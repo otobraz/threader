@@ -1,5 +1,6 @@
 const fs = require('fs');
 
+// "token" key must be set on the config.json file
 const { token } = require('./config.json');
 
 const { Client, Intents } = require('discord.js');
