@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-// "token" key must be set on the config.json file
-const { token } = require('./config.json');
+require('dotenv').config();
+const TOKEN = process.env.TOKEN;
 
 const { Client, Intents } = require('discord.js');
 
@@ -22,4 +22,4 @@ for (const file of eventFiles) {
    }
 }
 
-client.login(token);
+client.login(TOKEN);

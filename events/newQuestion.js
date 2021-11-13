@@ -1,7 +1,5 @@
-// "channelsToCreateThreadsIn" key must be set on the config.json file
-const { channelsToCreateThreadsIn } = require('./../config.json');
-
-const { threadNames } = require('./../threadNames.json');
+const { channelsToCreateThreadsIn } = require('./../config/config.json');
+const { threadNames } = require('./../config/threadNames.json');
 
 module.exports = {
    name: 'messageCreate',
