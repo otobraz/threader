@@ -5,7 +5,7 @@ const createThread = async (message) => {
    if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
       await message.startThread({
          name: generateThreadName(message),
-         autoArchiveDuration: 60,
+         autoArchiveDuration: 1440,
       });
       logThreadCreation(message);
    }
