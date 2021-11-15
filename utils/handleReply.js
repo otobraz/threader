@@ -28,7 +28,7 @@ const getOriginMessage = async (replyMessage, originMessageId) => {
 
 const makeEmbed = (replyMessage) => {
    const content = `${replyMessage.content}`;
-   const embed = new MessageEmbed().setDescription(content);
+   const embed = new MessageEmbed().setDescription(content).setColor('#0047A0');
    if (replyMessage.attachments.size) {
       embed.setImage(replyMessage.attachments.first().url);
    }
