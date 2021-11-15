@@ -1,30 +1,20 @@
-const { channelsToCreateThreadsIn } = require('./../config/config.json');
-const { threadNames } = require('./../config/threadNames.json');
+const { createThread } = require('../utils/threadManager');
+const { handleReply } = require('../utils/handleReply');
 
 module.exports = {
    name: 'messageCreate',
-   async execute(message) {
-      if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
-         await message.startThread({
-            name: generateThreadName(message),
-            autoArchiveDuration: 1440,
-         });
-         console.log(
-            `${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`
-         );
+   execute(message) {
+      if (message.author.bot) {
+         return;
+      }
+      if (isReply(message)) {
+         handleReply(message);
+      } else {
+         createThread(message);
       }
    },
 };
 
-//
-String.prototype.format = function () {
-   const args = arguments;
-   return this.replace(/{(\d+)}/g, function (match, number) {
-      return typeof args[number] != 'undefined' ? args[number] : match;
-   });
-};
-
-const generateThreadName = (message) => {
-   const messageIndex = Math.floor(Math.random() * threadNames.length);
-   return threadNames[messageIndex].format(message.member.displayName);
+const isReply = (message) => {
+   return message.reference;
 };
