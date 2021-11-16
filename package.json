@@ -1,6 +1,9 @@
 {
    "name": "threader-bot",
    "version": "1.0.0",
+   "engines": {
+      "node": "16.x"
+   },
    "description": "This is a simple bot to make threads automatically when members send messages in the configured channels.",
    "main": "index.js",
    "scripts": {
@@ -16,8 +19,7 @@
       "express": "^4.17.1"
    },
    "devDependencies": {
-      "eslint": "^7.28.0",
-      "node": "^16.13.0"
+      "eslint": "^7.28.0"
    },
    "repository": {
       "type": "git",

@@ -17,9 +17,7 @@ const generateThreadName = (message) => {
 };
 
 const logThreadCreation = (message) => {
-   console.log(
-      `${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`
-   );
+   console.log(`${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`);
 };
 
 String.prototype.format = function () {
