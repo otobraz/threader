@@ -10,21 +10,23 @@ module.exports = {
          return;
       }
 
-      const botPerms = [
+      const botRequiredPerms = [
          Permissions.FLAGS.CREATE_PUBLIC_THREADS,
          Permissions.FLAGS.SEND_MESSAGES_IN_THREADS,
          Permissions.FLAGS.MANAGE_MESSAGES,
       ];
 
-      if (!message.guild.me.permissions.has(botPerms)) {
+      const botPerms = message.channel.permissionsFor(message.guild.me);
+
+      if (!botPerms.has(botRequiredPerms)) {
          return console.log(
             `Bot is missing permissions on ${message.guild.name}:`,
             '\n',
-            `Create public threads: ${message.guild.me.permissions.has(Permissions.FLAGS.CREATE_PUBLIC_THREADS)}`,
+            `Create public threads: ${botPerms.has(Permissions.FLAGS.CREATE_PUBLIC_THREADS)}`,
             '\n',
-            `Send messages in threads: ${message.guild.me.permissions.has(Permissions.FLAGS.CREATE_PUBLIC_THREADS)}`,
+            `Send messages in threads: ${botPerms.has(Permissions.FLAGS.SEND_MESSAGES_IN_THREADS)}`,
             '\n',
-            `Manage messages: ${message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)}`
+            `Manage messages: ${botPerms.has(Permissions.FLAGS.MANAGE_MESSAGES)}`
          );
       }
 
