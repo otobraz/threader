@@ -1,5 +1,6 @@
-const fs = require('fs');
 const keepAlive = require('./server');
+const { loadCommands } = require('./utils/commandLoader');
+const { loadEvents } = require('./utils/eventLoader');
 
 require('dotenv').config();
 const TOKEN = process.env.TOKEN;
@@ -23,18 +24,8 @@ const client = new Client({
    },
 });
 
-const eventFiles = fs
-   .readdirSync('./events')
-   .filter((file) => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-   const event = require(`./events/${file}`);
-   if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args, client));
-   } else {
-      client.on(event.name, (...args) => event.execute(...args, client));
-   }
-}
+loadCommands(client);
+loadEvents(client);
 
 keepAlive();
 client.login(TOKEN);

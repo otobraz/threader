@@ -2,12 +2,16 @@ const { channelsToCreateThreadsIn } = require('../config/config.json');
 const { threadNames } = require('../config/threadNames.json');
 
 const createThread = async (message) => {
-   if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
-      await message.startThread({
-         name: generateThreadName(message),
-         autoArchiveDuration: 1440,
-      });
-      logThreadCreation(message);
+   try {
+      if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
+         await message.startThread({
+            name: generateThreadName(message),
+            autoArchiveDuration: 1440,
+         });
+         logThreadCreation(message);
+      }
+   } catch (err) {
+      console.log(err);
    }
 };
 
