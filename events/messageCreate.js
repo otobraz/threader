@@ -1,4 +1,5 @@
 const { createThread } = require('../utils/threadManager');
+const { channelsToCreateThreadsIn } = require('../config/config.json');
 const { handleReply } = require('../utils/handleReply');
 const { isReply, isCommand } = require('../utils/messageType');
 const { prefix } = require('./../config/config.json');
@@ -14,18 +15,8 @@ module.exports = {
 
       checkPerms(message);
 
-      if (isCommand(message)) {
-         const args = message.content.slice(prefix.length).trim().split(/ +/);
-         const commandName = args.shift().toLowerCase();
-         const command =
-            client.commands.get(commandName) ||
-            client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
-         try {
-            command.execute(message, args);
-         } catch (error) {
-            console.error(error);
-            message.reply('there was an error trying to execute that command!');
-         }
+      if (isCommand(message) && message.channel.isThread()) {
+         executeCommand(message, client);
       } else {
          newQuestion(message);
       }
@@ -33,6 +24,10 @@ module.exports = {
 };
 
 const checkPerms = (message) => {
+   if (!channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
+      return;
+   }
+
    const botRequiredPerms = [
       Permissions.FLAGS.CREATE_PUBLIC_THREADS,
       Permissions.FLAGS.SEND_MESSAGES_IN_THREADS,
@@ -59,5 +54,19 @@ const newQuestion = (message) => {
       handleReply(message);
    } else {
       createThread(message);
+   }
+};
+
+const executeCommand = (message, client) => {
+   const args = message.content.slice(prefix.length).trim().split(/ +/);
+   const commandName = args.shift().toLowerCase();
+   const command =
+      client.commands.get(commandName) ||
+      client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
+   try {
+      command.execute(message, args);
+   } catch (error) {
+      console.error(error);
+      message.reply('there was an error trying to execute that command!');
    }
 };
