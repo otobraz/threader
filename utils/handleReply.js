@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const handleReply = async (message) => {
    const originMessageId = message.reference.messageId;
    const originMessage = await getOriginMessage(message, originMessageId);
-   if (originMessage.hasThread) {
+   if (originMessage || originMessage.hasThread) {
       await sendReplyToThread(message, originMessage.thread);
       await deleteReply(message);
    }
