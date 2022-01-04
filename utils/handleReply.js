@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const handleReply = async (message) => {
    const originMessageId = message.reference.messageId;
    const originMessage = await getOriginMessage(message, originMessageId);
-   if (originMessage || originMessage.hasThread) {
+   if (originMessage && originMessage.hasThread) {
       await sendReplyToThread(message, originMessage.thread);
       await deleteReply(message);
    }
@@ -16,10 +16,14 @@ const deleteReply = async (replyMessage) => {
 
 const sendReplyToThread = async (replyMessage, thread) => {
    const embed = makeEmbed(replyMessage);
-   await thread.send({
-      content: `<@${replyMessage.author.id}> has replied to this thread with:`,
-      embeds: [embed],
-   });
+   try {
+      await thread.send({
+         content: `<@${replyMessage.author.id}> has replied to this thread with:`,
+         embeds: [embed],
+      });
+   } catch (err) {
+      console.error(err);
+   }
 };
 
 const getOriginMessage = async (replyMessage, originMessageId) => {
