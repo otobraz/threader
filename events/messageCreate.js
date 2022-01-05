@@ -13,21 +13,23 @@ module.exports = {
          return;
       }
 
-      if (botHasPerms(message)) {
-         if (isCommand(message) && message.channel.isThread()) {
-            executeCommand(message, client);
-         } else {
+      if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
+         if (botHasPerms(message)) {
             newQuestion(message);
+         }
+      } else if (
+         isCommand(message) &&
+         message.channel.isThread() &&
+         channelsToCreateThreadsIn.includes(Number(message.channel.parentId))
+      ) {
+         if (botHasPerms(message)) {
+            executeCommand(message, client);
          }
       }
    },
 };
 
 const botHasPerms = (message) => {
-   if (!channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
-      return false;
-   }
-
    const botRequiredPerms = [
       Permissions.FLAGS.CREATE_PUBLIC_THREADS,
       Permissions.FLAGS.SEND_MESSAGES_IN_THREADS,
