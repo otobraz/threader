@@ -1,11 +1,14 @@
 const { MessageEmbed } = require('discord.js');
 
 const handleReply = async (message) => {
-   const originMessageId = message.reference.messageId;
-   const originMessage = await getOriginMessage(message, originMessageId);
-   if (originMessage && originMessage.hasThread) {
-      await sendReplyToThread(message, originMessage.thread);
-      await deleteReply(message);
+   if (message) {
+      const originMessageId = message.reference.messageId;
+      const originMessage = await getOriginMessage(message, originMessageId);
+      console.log(originMessage);
+      if (originMessage && originMessage.hasThread) {
+         await sendReplyToThread(message, originMessage.thread);
+         deleteReply(message);
+      }
    }
 };
 
@@ -16,18 +19,17 @@ const deleteReply = async (replyMessage) => {
 
 const sendReplyToThread = async (replyMessage, thread) => {
    const embed = makeEmbed(replyMessage);
-   try {
-      await thread.send({
+   thread
+      .send({
          content: `<@${replyMessage.author.id}> has replied to this thread with:`,
          embeds: [embed],
-      });
-   } catch (err) {
-      console.error(err);
-   }
+      })
+      .then((message) => console.log(`Sent message: ${message.content}`))
+      .catch((error) => console.error(error));
 };
 
 const getOriginMessage = async (replyMessage, originMessageId) => {
-   return await replyMessage.channel.messages.fetch(originMessageId);
+   return replyMessage.channel.messages.fetch(originMessageId);
 };
 
 const makeEmbed = (replyMessage) => {
