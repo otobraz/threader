@@ -4,19 +4,21 @@ module.exports = {
    execute(message) {
       if (message.channel.isThread) {
          const thread = message.channel;
-         try {
-            archive(thread, message.author.id);
-         } catch (err) {
-            console.log(err);
-         }
+         archive(thread, message.author.id);
       }
    },
 };
 
-const archive = async (thread, authorId) => {
-   const starterMessage = await thread.fetchStarterMessage();
-   if (starterMessage.author.id === authorId) {
-      await thread.send(`<@${authorId}> has archived this thread`);
-      await thread.setArchived(true);
-   }
+const archive = (thread, authorId) => {
+   thread
+      .fetchStarterMessage()
+      .then((starterMessage) => {
+         if (starterMessage.author.id === authorId) {
+            thread.send(`<@${authorId}> has archived this thread`).then(thread.setArchived(true));
+         }
+      })
+      .catch((err) => {
+         console.error('Something happened when I tried to archive a thread');
+         console.error(err);
+      });
 };
