@@ -1,4 +1,4 @@
-const { channelsToCreateThreadsIn } = require('../config/config.json');
+const { channelsToCreateThreadsIn, threadInitMsg } = require('../config/config.json');
 const { threadNames } = require('../config/threadNames.json');
 
 const createThread = async (message) => {
@@ -7,9 +7,10 @@ const createThread = async (message) => {
          if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
             await message.startThread({
                name: generateThreadName(message),
-               autoArchiveDuration: 1440,
+               autoArchiveDuration: 'MAX',
             });
             logThreadCreation(message);
+            message.thread.send(`<@${message.author.id}>, ${threadInitMsg}`).catch(console.error);
          }
       } catch (err) {
          console.log(err);
@@ -26,6 +27,18 @@ const logThreadCreation = (message) => {
    console.log(`${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`);
 };
 
+const openThread = (thread) => {
+   if (thread.name.startsWith('[Answered] -')) {
+      const newName = thread.name.replace('[Answered]', '[Open]');
+      thread.setName(newName);
+   }
+};
+
+const closeThread = async (thread, member) => {
+   const newName = `[Answered] - ${member.displayName}`;
+   thread.setName(newName);
+};
+
 String.prototype.format = function () {
    const args = arguments;
    return this.replace(/{(\d+)}/g, function (match, number) {
@@ -35,4 +48,6 @@ String.prototype.format = function () {
 
 module.exports = {
    createThread,
+   openThread,
+   closeThread,
 };

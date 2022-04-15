@@ -15,7 +15,7 @@ module.exports = {
 
 const changeName = async (thread, authorId, newName) => {
    const starterMessage = await thread.fetchStarterMessage();
-   if (starterMessage.author.id !== authorId) {
+   if (starterMessage && starterMessage.author.id !== authorId) {
       throw `${authorId} tried to change someone else's thread`;
    }
    await thread.setName(newName).catch(console.error);

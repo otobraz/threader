@@ -1,10 +1,9 @@
-const { createThread } = require('../utils/threadManager');
+const { createThread, openThread } = require('../utils/threadManager');
 const { channelsToCreateThreadsIn } = require('../config/config.json');
 const { handleReply } = require('../utils/handleReply');
 const { isReply, isCommand } = require('../utils/messageType');
 const { prefix } = require('./../config/config.json');
-
-const { Permissions } = require('discord.js');
+const { botHasPerms } = require('./../utils/permissions');
 
 module.exports = {
    name: 'messageCreate',
@@ -17,40 +16,15 @@ module.exports = {
          if (botHasPerms(message)) {
             newQuestion(message);
          }
-      } else if (
-         isCommand(message) &&
-         message.channel.isThread() &&
-         channelsToCreateThreadsIn.includes(Number(message.channel.parentId))
-      ) {
+      } else if (isCommandInAThread(message)) {
          if (botHasPerms(message)) {
             executeCommand(message, client);
          }
       }
+      // else if (isValidThread(message)) {
+      //    openThread(message.channel);
+      // }
    },
-};
-
-const botHasPerms = (message) => {
-   const botRequiredPerms = [
-      Permissions.FLAGS.CREATE_PUBLIC_THREADS,
-      Permissions.FLAGS.SEND_MESSAGES_IN_THREADS,
-      Permissions.FLAGS.MANAGE_MESSAGES,
-   ];
-
-   const botPerms = message.channel.permissionsFor(message.guild.me);
-
-   if (!botPerms.has(botRequiredPerms)) {
-      console.log(
-         `Bot is missing permissions on ${message.guild.name}:`,
-         '\n',
-         `Create public threads: ${botPerms.has(Permissions.FLAGS.CREATE_PUBLIC_THREADS)}`,
-         '\n',
-         `Send messages in threads: ${botPerms.has(Permissions.FLAGS.SEND_MESSAGES_IN_THREADS)}`,
-         '\n',
-         `Manage messages: ${botPerms.has(Permissions.FLAGS.MANAGE_MESSAGES)}`
-      );
-      return false;
-   }
-   return true;
 };
 
 const newQuestion = (message) => {
@@ -72,7 +46,15 @@ const executeCommand = (message, client) => {
          command.execute(message, args);
       } catch (error) {
          console.error(error);
-         message.reply('there was an error trying to execute that command!');
+         message.reply('There was an error trying to execute that command!');
       }
    }
+};
+
+const isCommandInAThread = (message) => {
+   return isCommand(message) && isValidThread(message);
+};
+
+const isValidThread = (message) => {
+   return message.channel.isThread() && channelsToCreateThreadsIn.includes(Number(message.channel.parentId));
 };
