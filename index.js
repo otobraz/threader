@@ -27,5 +27,4 @@ const client = new Client({
 loadCommands(client);
 loadEvents(client);
 
-keepAlive();
 client.login(TOKEN);
