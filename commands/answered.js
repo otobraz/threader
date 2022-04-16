@@ -19,11 +19,11 @@ module.exports = {
 const answered = async (thread, message) => {
    const starterMessage = await thread.fetchStarterMessage();
    if (starterMessage && canArchiveThread(starterMessage, message)) {
+      await thread.setAutoArchiveDuration(60);
+      await closeThread(thread);
       await thread.send(
          `<@${message.author.id}> has marked this thread as answered. It will be auto archived in 1 hour`
       );
-      await thread.setAutoArchiveDuration(60);
-      await closeThread(thread, message.member);
    } else {
       await message.reply('Only thread owners can mark their threads as answered');
    }

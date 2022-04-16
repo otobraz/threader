@@ -34,8 +34,9 @@ const openThread = (thread) => {
    }
 };
 
-const closeThread = async (thread, member) => {
-   const newName = `[Answered] - ${member.displayName}`;
+const closeThread = async (thread) => {
+   const oldName = thread.name;
+   const newName = `[Answered] - ${oldName}`;
    thread.setName(newName);
 };
 
