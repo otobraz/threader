@@ -27,4 +27,6 @@ const client = new Client({
 loadCommands(client);
 loadEvents(client);
 
+client.on('debug', (e) => console.log(e));
+
 client.login(TOKEN);
