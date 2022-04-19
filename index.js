@@ -27,6 +27,12 @@ const client = new Client({
 loadCommands(client);
 loadEvents(client);
 
-client.on('debug', (e) => console.log(e));
+// client.on('debug', (e) => console.log(e));
+
+client.on('rateLimit', (request) => {
+   console.log('-------BEGIN: RATE LIMIT LOG-------');
+   console.log(request);
+   console.log('-------END: RATE LIMIT LOG-------');
+});
 
 client.login(TOKEN);
