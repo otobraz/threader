@@ -5,7 +5,7 @@ module.exports = {
    execute(message) {
       if (message.channel.isThread) {
          const thread = message.channel;
-         reminder(thread, message).catch((err) => {
+         reminder(thread).catch((err) => {
             console.error("I couldn't the thread owner for some reason");
             console.error(err);
          });
@@ -13,9 +13,9 @@ module.exports = {
    },
 };
 
-const reminder = async (thread, message) => {
+const reminder = async (thread) => {
    const starterMessage = await thread.fetchStarterMessage();
    if (starterMessage) {
-      await thread.send(`<@${message.author.id}>, remember to mark your question as answered with \`-a\``);
+      await thread.send(`<@${starterMessage.author.id}>, remember to mark your question as answered with \`-a\``);
    }
 };
