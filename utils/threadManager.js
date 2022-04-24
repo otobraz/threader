@@ -13,7 +13,9 @@ const createThread = async (message) => {
             message.thread.send(`<@${message.author.id}>, ${threadInitMsg}`).catch(console.error);
          }
       } catch (err) {
+         console.error('Error when replying to thread');
          console.log(err);
+         console.error('Error when replying to thread');
       }
    }
 };

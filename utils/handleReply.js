@@ -4,7 +4,6 @@ const handleReply = async (message) => {
    if (message) {
       const originMessageId = message.reference.messageId;
       const originMessage = await getOriginMessage(message, originMessageId);
-      console.log(originMessage);
       if (originMessage && originMessage.hasThread) {
          await sendReplyToThread(message, originMessage.thread);
          deleteReply(message);
@@ -25,7 +24,11 @@ const sendReplyToThread = async (replyMessage, thread) => {
          embeds: [embed],
       })
       .then((message) => console.log(`Sent message: ${message.content}`))
-      .catch((error) => console.error(error));
+      .catch((error) => {
+         console.error('Error when replying to thread');
+         console.error(error);
+         console.error('Error when replying to thread');
+      });
 };
 
 const getOriginMessage = async (replyMessage, originMessageId) => {

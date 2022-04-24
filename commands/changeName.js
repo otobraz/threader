@@ -8,7 +8,11 @@ module.exports = {
          const thread = message.channel;
          changeName(thread, message.author.id, newName)
             .then(() => message.delete())
-            .catch(console.error);
+            .catch(err => {
+               console.error("Issue when trying to change a thread's name");
+               console.error(err);
+               console.error("Issue when trying to change a thread's name");
+            }
       }
    },
 };

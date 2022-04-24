@@ -45,7 +45,9 @@ const executeCommand = (message, client) => {
       try {
          command.execute(message, args);
       } catch (error) {
+         console.error('Error when executing a command');
          console.error(error);
+         console.error('Error when executing a command');
          message.reply('There was an error trying to execute that command!');
       }
    }

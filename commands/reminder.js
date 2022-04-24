@@ -5,10 +5,13 @@ module.exports = {
    execute(message) {
       if (message.channel.isThread) {
          const thread = message.channel;
-         reminder(thread).catch((err) => {
-            console.error("I couldn't the thread owner for some reason");
-            console.error(err);
-         });
+         reminder(thread)
+            .then(() => message.delete())
+            .catch((err) => {
+               console.error("I couldn't remind the thread owner for some reason");
+               console.error(err);
+               console.error("I couldn't remind the thread owner for some reason");
+            });
       }
    },
 };
