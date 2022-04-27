@@ -12,7 +12,7 @@ module.exports = {
                console.error("Issue when trying to change a thread's name");
                console.error(err);
                console.error("Issue when trying to change a thread's name");
-            }
+            });
       }
    },
 };
