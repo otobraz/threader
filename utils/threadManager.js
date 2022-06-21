@@ -1,5 +1,6 @@
 const { channelsToCreateThreadsIn, threadInitMsg } = require('../config/config.json');
 const { threadNames } = require('../config/threadNames.json');
+const { threadAutoArchiveDuration } = require('../config/config.json');
 
 const createThread = async (message) => {
    if (message) {
@@ -7,7 +8,7 @@ const createThread = async (message) => {
          if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
             await message.startThread({
                name: generateThreadName(message),
-               autoArchiveDuration: 'MAX',
+               autoArchiveDuration: threadAutoArchiveDuration,
             });
             logThreadCreation(message);
             message.thread.send(`<@${message.author.id}>, ${threadInitMsg}`).catch(console.error);
@@ -26,7 +27,9 @@ const generateThreadName = (message) => {
 };
 
 const logThreadCreation = (message) => {
-   console.log(`${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`);
+   console.log(
+      `${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`
+   );
 };
 
 const openThread = (thread) => {
