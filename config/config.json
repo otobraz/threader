@@ -1,9 +1,8 @@
 {
    "prefix": "-",
    "channelsToCreateThreadsIn": [
-      701524388486316142, 234495180470747146, 346064102080118796,
-      395962018332672001
+      701524388486316142, 234495180470747146, 346064102080118796, 395962018332672001
    ],
-   "threadInitMsg": "I've created this thread for your question. \nRemember you can ping mentors if it doesn't get answered. \nPlease use the `-answered` command if your question is answered.",
+   "threadInitMsg": "I've created this thread for your question.\nUse the `-answered` command if your question is answered.\nFeel free to ping mentors if you don't get answers in a day.",
    "threadAutoArchiveDuration": 4320
 }

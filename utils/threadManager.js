@@ -15,8 +15,6 @@ const createThread = async (message) => {
          }
       } catch (err) {
          console.error('Error when replying to thread');
-         console.log(err);
-         console.error('Error when replying to thread');
       }
    }
 };
