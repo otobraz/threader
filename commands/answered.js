@@ -24,6 +24,7 @@ const answered = async (thread, message) => {
       await thread.send(
          `<@${message.author.id}> has marked this thread as answered`
       );
+      thread.setArchived(true);
    } else {
       await message.reply('Only thread owners can mark their threads as answered');
    }
