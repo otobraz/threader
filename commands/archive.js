@@ -34,3 +34,5 @@ const canArchiveAllThreads = (starterMessage, message) => {
 const isAnswered = (thread) => {
    return thread.name.startsWith('[Answered]');
 };
+
+const sleep = (m) => new Promise((r) => setTimeout(r, m));

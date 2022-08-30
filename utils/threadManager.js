@@ -41,6 +41,7 @@ const closeThread = async (thread) => {
    const oldName = thread.name;
    const newName = `[Answered] - ${oldName}`;
    thread.setName(newName);
+   thread.setArchived(true);
 };
 
 String.prototype.format = function () {
