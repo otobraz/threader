@@ -11,7 +11,6 @@ module.exports = {
          answered(thread, message).catch((err) => {
             console.error('Something happened when I tried to archive a thread');
             console.error(err);
-            console.error('Something happened when I tried to archive a thread');
          });
       }
    },

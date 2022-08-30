@@ -12,7 +12,7 @@ module.exports = {
          return;
       }
 
-      if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
+      if (channelsToCreateThreadsIn.includes(message.channel.id)) {
          if (botHasPerms(message)) {
             newQuestion(message);
          }
@@ -20,10 +20,9 @@ module.exports = {
          if (botHasPerms(message)) {
             executeCommand(message, client);
          }
+      } else if (message.content === '-archiveall') {
+         executeCommand(message, client);
       }
-      // else if (isValidThread(message)) {
-      //    openThread(message.channel);
-      // }
    },
 };
 
@@ -43,11 +42,10 @@ const executeCommand = (message, client) => {
       client.commands.find((cmd) => cmd.aliases && cmd.aliases.includes(commandName));
    if (command) {
       try {
-         command.execute(message, args);
+         command.execute(message, client, args);
       } catch (error) {
          console.error('Error when executing a command');
          console.error(error);
-         console.error('Error when executing a command');
          message.reply('There was an error trying to execute that command!');
       }
    }
@@ -58,5 +56,5 @@ const isCommandInAThread = (message) => {
 };
 
 const isValidThread = (message) => {
-   return message.channel.isThread() && channelsToCreateThreadsIn.includes(Number(message.channel.parentId));
+   return message.channel.isThread() && channelsToCreateThreadsIn.includes(message.channel.parentId);
 };

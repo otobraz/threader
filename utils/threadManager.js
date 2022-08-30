@@ -5,7 +5,7 @@ const { threadAutoArchiveDuration } = require('../config/config.json');
 const createThread = async (message) => {
    if (message) {
       try {
-         if (channelsToCreateThreadsIn.includes(Number(message.channel.id))) {
+         if (channelsToCreateThreadsIn.includes(message.channel.id)) {
             await message.startThread({
                name: generateThreadName(message),
                autoArchiveDuration: threadAutoArchiveDuration,
