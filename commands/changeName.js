@@ -1,17 +1,17 @@
 module.exports = {
    name: 'name',
-   description: "Updates threads' name",
+   description: 'Updates threads\' name',
    args: true,
-   execute(message, args) {
+   execute(message, client, args) {
       const newName = args.join(' ');
       if (message.channel.isThread) {
          const thread = message.channel;
          changeName(thread, message.author.id, newName)
             .then(() => message.delete())
             .catch(err => {
-               console.error("Issue when trying to change a thread's name");
+               console.error('Issue when trying to change a thread\'s name');
                console.error(err);
-               console.error("Issue when trying to change a thread's name");
+               console.error('Issue when trying to change a thread\'s name');
             });
       }
    },
