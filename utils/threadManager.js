@@ -39,6 +39,9 @@ const openThread = (thread) => {
 
 const closeThread = async (thread) => {
    const oldName = thread.name;
+
+   if (oldName.startsWith(`[Answered] - `)) return;
+
    const newName = `[Answered] - ${oldName}`;
    thread.setName(newName);
 };
