@@ -1,8 +1,8 @@
 module.exports = {
    name: 'reminder',
-   description: 'Archives current thread!',
+   description: 'Reminds people to archive their thread',
    aliases: ['r'],
-   execute(message) {
+   async execute(message) {
       if (message.channel.isThread) {
          const thread = message.channel;
          reminder(thread)
@@ -10,7 +10,6 @@ module.exports = {
             .catch((err) => {
                console.error("I couldn't remind the thread owner for some reason");
                console.error(err);
-               console.error("I couldn't remind the thread owner for some reason");
             });
       }
    },

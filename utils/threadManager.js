@@ -46,6 +46,15 @@ const closeThread = async (thread) => {
    thread.setName(newName);
 };
 
+const setTags = (thread) => {
+   const answeredTag = thread.parent.availableTags.find((tag) => tag.name === 'Answered');
+   const notAnsweredTag = thread.parent.availableTags.find((tag) => tag.name === 'Not Answered');
+   const tagsToApply = [...new Set(Array(answeredTag.id, ...thread.appliedTags.filter((tag) => tag !== notAnsweredTag.id)))];
+   thread.setAppliedTags(tagsToApply);
+};
+
+const isForumThread = thread => thread.parent.availableTags;
+
 String.prototype.format = function () {
    const args = arguments;
    return this.replace(/{(\d+)}/g, function (match, number) {
@@ -57,4 +66,6 @@ module.exports = {
    createThread,
    openThread,
    closeThread,
+   setTags,
+   isForumThread,
 };

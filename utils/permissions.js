@@ -1,23 +1,22 @@
-const { Permissions } = require('discord.js');
+const { PermissionsBitField } = require('discord.js');
 
 const botHasPerms = (message) => {
    const botRequiredPerms = [
-      Permissions.FLAGS.CREATE_PUBLIC_THREADS,
-      Permissions.FLAGS.SEND_MESSAGES_IN_THREADS,
-      Permissions.FLAGS.MANAGE_MESSAGES,
+      PermissionsBitField.Flags.CreatePublicThreads,
+      PermissionsBitField.Flags.SendMessagesInThreads,
+      PermissionsBitField.Flags.ManageMessages,
    ];
 
-   const botPerms = message.channel.permissionsFor(message.guild.me);
-
+   const botPerms = message.channel.permissionsFor(message.guild.members.me);
    if (!botPerms.has(botRequiredPerms)) {
       console.log(
          `Bot is missing permissions on ${message.guild.name}:`,
          '\n',
-         `Create public threads: ${botPerms.has(Permissions.FLAGS.CREATE_PUBLIC_THREADS)}`,
+         `Create public threads: ${botPerms.has(PermissionsBitField.Flags.CreatePublicThreads)}`,
          '\n',
-         `Send messages in threads: ${botPerms.has(Permissions.FLAGS.SEND_MESSAGES_IN_THREADS)}`,
+         `Send messages in threads: ${botPerms.has(PermissionsBitField.Flags.SendMessagesInThreads)}`,
          '\n',
-         `Manage messages: ${botPerms.has(Permissions.FLAGS.MANAGE_MESSAGES)}`
+         `Manage messages: ${botPerms.has(PermissionsBitField.Flags.ManageMessages)}`
       );
       return false;
    }
@@ -26,7 +25,7 @@ const botHasPerms = (message) => {
 
 const isThreadManager = (channel, member) => {
    const memberPerms = channel.permissionsFor(member);
-   return memberPerms.has(Permissions.FLAGS.MANAGE_THREADS);
+   return memberPerms.has(PermissionsBitField.Flags.ManageThreads);
 };
 
 module.exports = { isThreadManager, botHasPerms };
