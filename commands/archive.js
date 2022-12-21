@@ -1,5 +1,4 @@
 const { isThreadManager } = require('../utils/permissions');
-const { closeThread } = require('../utils/threadManager');
 const { channelsToCreateThreadsIn } = require('../config/config.json');
 
 module.exports = {
@@ -12,7 +11,7 @@ module.exports = {
             archiveAll(client, channelId);
          });
       }
-      message.delete().catch(error => console.error(error));
+      message.delete().catch((error) => console.error(error));
    },
 };
 
@@ -34,5 +33,3 @@ const canArchiveAllThreads = (starterMessage, message) => {
 const isAnswered = (thread) => {
    return thread.name.startsWith('[Answered]');
 };
-
-const sleep = (m) => new Promise((r) => setTimeout(r, m));

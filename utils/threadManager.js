@@ -1,6 +1,7 @@
 const { channelsToCreateThreadsIn, threadInitMsg } = require('../config/config.json');
 const { threadNames } = require('../config/threadNames.json');
 const { threadAutoArchiveDuration } = require('../config/config.json');
+const { answeredTagName, unansweredTagName } = require('../config/config.json');
 
 const createThread = async (message) => {
    if (message) {
@@ -25,9 +26,7 @@ const generateThreadName = (message) => {
 };
 
 const logThreadCreation = (message) => {
-   console.log(
-      `${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`
-   );
+   console.log(`${message.member.displayName}(${message.author.id}) started a thread in ${message.channel}`);
 };
 
 const openThread = (thread) => {
@@ -47,13 +46,13 @@ const closeThread = async (thread) => {
 };
 
 const setTags = (thread) => {
-   const answeredTag = thread.parent.availableTags.find((tag) => tag.name === 'Answered');
-   const notAnsweredTag = thread.parent.availableTags.find((tag) => tag.name === 'Not Answered');
+   const answeredTag = thread.parent.availableTags.find((tag) => tag.name === answeredTagName);
+   const notAnsweredTag = thread.parent.availableTags.find((tag) => tag.name === unansweredTagName);
    const tagsToApply = [...new Set(Array(answeredTag.id, ...thread.appliedTags.filter((tag) => tag !== notAnsweredTag.id)))];
    thread.setAppliedTags(tagsToApply);
 };
 
-const isForumThread = thread => thread.parent.availableTags;
+const isForumThread = (thread) => thread.parent.availableTags;
 
 String.prototype.format = function () {
    const args = arguments;

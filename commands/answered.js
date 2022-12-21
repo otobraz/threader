@@ -6,17 +6,14 @@ module.exports = {
    name: 'answered',
    description: 'Archives current thread!',
    aliases: ['a', 'archive'],
-   data: new SlashCommandBuilder()
-      .setName('answered')
-      .setDescription('Archives current thread!'),
+   data: new SlashCommandBuilder().setName('answered').setDescription('Archives current thread!'),
    execute(interaction) {
       if (interaction.channel.isThread) {
          const thread = interaction.channel;
-         answered(thread, interaction)
-            .catch((err) => {
-               console.error('Something happened when I tried to archive a thread');
-               console.error(err);
-            });
+         answered(thread, interaction).catch((err) => {
+            console.error('Something happened when I tried to archive a thread');
+            console.error(err);
+         });
       }
    },
 };
@@ -30,7 +27,7 @@ const answered = async (thread, interaction) => {
          await closeThread(thread);
       }
       await interaction.reply(`<@${interaction.member.id}> has marked this thread as answered`);
-      setTimeout(function() {
+      setTimeout(function () {
          thread.setArchived(true);
       }, 1000);
    } else {
