@@ -9,13 +9,10 @@ module.exports = {
    data: new SlashCommandBuilder()
       .setName('name')
       .setDescription("Updates threads' name")
-      .addStringOption(option =>
-			option.setName('title')
-				   .setDescription('The new title for the thread')
-				   .setRequired(true)),
+      .addStringOption((option) => option.setName('title').setDescription('The new title for the thread').setRequired(true)),
    execute(message, _, args) {
       if (!message.channel.isThread()) return;
-      
+
       const thread = message.channel;
 
       if (message.content && isCommand(message)) {
@@ -25,7 +22,6 @@ module.exports = {
          const newName = message.options.getString('title');
          changeNameSlashCommand(message, thread, newName);
       }
-      
    },
 };
 
