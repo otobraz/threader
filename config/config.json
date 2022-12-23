@@ -11,7 +11,7 @@
 	"threadInitMsg": "I've created this thread for your question.\nUse the `-answered` command if your question is answered.\nFeel free to ping mentors if you don't get answers in a day.",
 	"unansweredThreadAutoArchiveDuration": 10080,
 	"answeredThreadAutoArchiveDuration": 1440,
-	"taskInterval": 0.1,
+	"taskInterval": 60,
 	"answeredTagName": "Answered",
 	"unansweredTagName": "Unanswered"
 }
