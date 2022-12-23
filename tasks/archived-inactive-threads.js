@@ -26,12 +26,20 @@ const archiveInactiveThreads = async (client, channelId) => {
 };
 
 const archiveThreadIfInactive = async (thread) => {
-	const lastMessage = await thread.messages.fetch(thread.lastMessageId);
-	const lastMessageTimeStamp = lastMessage.createdTimestamp;
-	const threadInactiveFor = timeSinceLastMessageInMinutes(lastMessageTimeStamp, Date.now());
-	const inactiveTimeThreshold = isAnswered(thread) ? answeredThreadAutoArchiveDuration : unansweredThreadAutoArchiveDuration;
-	if (threadInactiveFor >= inactiveTimeThreshold) {
-		thread.setArchived(true);
+	try {
+		const lastMessageMap = await thread.messages.fetch({ limit: 1 });
+		const lastMessage = lastMessageMap.values().next().value;
+		const lastMessageTimeStamp = lastMessage.createdTimestamp;
+		const threadInactiveFor = timeSinceLastMessageInMinutes(lastMessageTimeStamp, Date.now());
+		const inactiveTimeThreshold = isAnswered(thread)
+			? answeredThreadAutoArchiveDuration
+			: unansweredThreadAutoArchiveDuration;
+		if (threadInactiveFor >= inactiveTimeThreshold) {
+			thread.setArchived(true);
+		}
+	} catch (error) {
+		console.log("Error while trying to archive thread");
+		console.log(`${error}`);
 	}
 };
 
@@ -59,4 +67,4 @@ const timeSinceLastMessageInMinutes = (lastMessageTimeStamp, nowTimeStamp) => {
 	return (nowTimeStamp - lastMessageTimeStamp) / MILLISECONDS_TO_SECONDS / SECONDS_TO_MINUTES;
 };
 
-module.exports = { autoArchiveInactiveThreads };
+module.exports = { autoArchiveInactiveThreads, archiveInactiveThreads };
