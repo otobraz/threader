@@ -8,7 +8,7 @@ module.exports = {
 	aliases: ["a", "archive"],
 	data: new SlashCommandBuilder().setName("answered").setDescription("Archives current thread!"),
 	execute(interaction) {
-		if (interaction.channel.isThread) {
+		if (interaction.channel.isThread()) {
 			const thread = interaction.channel;
 			answered(thread, interaction).catch((err) => {
 				console.error("Something happened when I tried to archive a thread");
