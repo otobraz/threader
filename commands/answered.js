@@ -30,7 +30,7 @@ const answered = async (thread, interaction) => {
 			}, 1000);
 		}
 		await interaction.reply(
-			`<@${interaction.member.id}> has marked this thread as answered. It will be archived after 1 day of inactivity.`,
+			`<@${interaction.member.id}> has marked this thread as answered.\nIt will be archived after 1 day of inactivity.`,
 		);
 	} else {
 		await interaction.reply({ content: "Only thread owners can mark their threads as answered", ephemeral: true });
