@@ -1,16 +1,16 @@
-const { Events } = require('discord.js');
-const { unansweredTagName } = require('../config/config.json');
+const { Events } = require("discord.js");
+const { unansweredTagName } = require("../config/config.json");
 
 module.exports = {
-   name: Events.ThreadCreate,
-   execute(thread) {
-      if (!thread.parent.availableTags) return;
+	name: Events.ThreadCreate,
+	execute(thread) {
+		if (!thread.parent.availableTags) return;
 
-      const notAnsweredTag = thread.parent.availableTags.find((tag) => tag.name === unansweredTagName);
+		const notAnsweredTag = thread.parent.availableTags.find((tag) => tag.name === unansweredTagName);
 
-      if (!notAnsweredTag) return;
+		if (!notAnsweredTag) return;
 
-      const tagsToApply = Array(notAnsweredTag.id, ...thread.appliedTags);
-      thread.setAppliedTags(tagsToApply);
-   },
+		const tagsToApply = Array(notAnsweredTag.id, ...thread.appliedTags);
+		thread.setAppliedTags(tagsToApply);
+	},
 };

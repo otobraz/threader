@@ -58,9 +58,11 @@ const getOpenThreads = async (client, channelId) => {
 const isAnswered = (thread) => {
 	const availableTags = thread.parent.availableTags;
 
-	if (availableTags) return thread.parent.availableTags.some((tag) => tag.name === answeredTagName);
+	if (!availableTags) return thread.name.startsWith("[Answered]");
 
-	return thread.name.startsWith("[Answered]");
+	const answeredTag = thread.parent.availableTags.find((tag) => tag.name === answeredTagName);
+
+	if (answeredTag) return thread.appliedTags.some((tag) => tag === answeredTag.id);
 };
 
 const timeSinceLastMessageInMinutes = (lastMessageTimeStamp, nowTimeStamp) => {
