@@ -1,13 +1,7 @@
 {
 	"prefix": "-",
-	"channelsToCreateThreadsIn": [
-		"701524388486316142",
-		"234495180470747146",
-		"346064102080118796",
-		"395962018332672001",
-		"1050901518909460651",
-		"1021115349288091648"
-	],
+	"channelsToCreateThreadsIn": [],
+   "rolesThatCanArchiveThreads": [],
 	"threadInitMsg": "I've created this thread for your question.\nUse the `-answered` command if your question is answered.\nFeel free to ping mentors if you don't get answers in a day.",
 	"unansweredThreadAutoArchiveDuration": 10080,
 	"answeredThreadAutoArchiveDuration": 1440,

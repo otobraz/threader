@@ -9,7 +9,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("name")
 		.setDescription("Updates threads' name")
-		.addStringOption((option) => option.setName("title").setDescription("The new title for the thread").setRequired(true)),
+		.addStringOption((option) =>
+			option.setName("title").setDescription("The new title for the thread").setRequired(true)),
 	execute(message, _, args) {
 		if (!message.channel.isThread()) return;
 

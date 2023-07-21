@@ -48,7 +48,8 @@ const closeThread = async (thread) => {
 const setTags = (thread) => {
 	const answeredTag = thread.parent.availableTags.find((tag) => tag.name === answeredTagName);
 	const notAnsweredTag = thread.parent.availableTags.find((tag) => tag.name === unansweredTagName);
-	const tagsToApply = [...new Set(Array(answeredTag.id, ...thread.appliedTags.filter((tag) => tag !== notAnsweredTag.id)))];
+	const tagsToApply = [...new Set(Array(answeredTag.id,
+		...thread.appliedTags.filter((tag) => tag !== notAnsweredTag.id)))];
 	thread.setAppliedTags(tagsToApply);
 };
 
