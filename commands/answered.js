@@ -1,6 +1,7 @@
 const { isThreadManager } = require("../utils/permissions");
 const { closeThread, setTags, isForumThread } = require("../utils/threadManager");
 const { SlashCommandBuilder } = require("discord.js");
+const { rolesThatCanArchiveThreads } = require("../config/config.json");
 
 module.exports = {
 	name: "answered",
@@ -29,8 +30,8 @@ const answered = async (thread, interaction) => {
 				thread.setArchived(true);
 			}, 1000);
 		}
-		await interaction.reply(
-			`<@${interaction.member.id}> has marked this thread as answered.\nIt will be archived after 1 day of inactivity.`,
+		await interaction.reply(`<@${interaction.member.id}> has marked this thread as answered.
+         \nIt will be archived after 1 day of inactivity.`,
 		);
 	} else {
 		await interaction.reply({ content: "Only thread owners can mark their threads as answered", ephemeral: true });
@@ -38,5 +39,7 @@ const answered = async (thread, interaction) => {
 };
 
 const canArchiveThread = (starterMessage, interaction) => {
-	return starterMessage.author.id === interaction.member.id || isThreadManager(interaction.channel, interaction.member);
+	return starterMessage.author.id === interaction.member.id ||
+				interaction.member.roles.cache.some(role => rolesThatCanArchiveThreads.includes(role.id)) ||
+				isThreadManager(interaction.channel, interaction.member);
 };
