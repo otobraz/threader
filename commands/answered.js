@@ -12,7 +12,7 @@ module.exports = {
 		if (interaction.channel.isThread()) {
 			const thread = interaction.channel;
 			answered(thread, interaction).catch((err) => {
-				console.error("Something happened when I tried to archive a thread");
+				interaction.reply({ content: "Something went wrong when I tried to archive the thread", ephemeral: true });
 				console.error(err);
 			});
 		}
@@ -20,25 +20,60 @@ module.exports = {
 };
 
 const answered = async (thread, interaction) => {
-	const starterMessage = await thread.fetchStarterMessage();
-	if (starterMessage && canArchiveThread(starterMessage, interaction)) {
-		if (isForumThread(thread)) {
-			setTags(thread);
-		} else {
-			await closeThread(thread);
-			setTimeout(function() {
-				thread.setArchived(true);
-			}, 1000);
-		}
-		await interaction.reply(`<@${interaction.member.id}> has marked this thread as answered. It will be archived after 1 day of inactivity.`,
-		);
-	} else {
-		await interaction.reply({ content: "Only thread owners can mark their threads as answered", ephemeral: true });
-	}
+	if (isForumThread(thread)) return handleForumThreads(thread, interaction);
+	handleDefaultThreads(thread, interaction);
 };
 
-const canArchiveThread = (starterMessage, interaction) => {
+const handleDefaultThreads = async (thread, interaction) => {
+	const starterMessage = await getStarterMessage(thread);
+
+	if (!starterMessage) {
+		return await interaction.reply({
+			content: "Thread could not be archived. Thread owner could not be determined because starter message was deleted.",
+			ephemeral: true,
+		});
+	}
+
+	if (!canArchiveDefaultThread(starterMessage, interaction)) {
+		return await interaction.reply({
+			content: "Only thread owners can mark their threads as answered", ephemeral: true,
+		});
+	}
+
+	await closeThread(thread);
+	setTimeout(function() { thread.setArchived(true); }, 1000);
+	await interaction.reply(
+		`<@${interaction.member.id}> has marked this thread as answered. It will be archived after 1 day of inactivity.`);
+};
+
+const handleForumThreads = async (thread, interaction) => {
+	if (!canArchiveForumThread(thread.ownerId, interaction)) {
+		return await interaction.reply({
+			content: "Only thread owners can mark their threads as answered", ephemeral: true 
+		});
+	}
+	setTags(thread);
+	await interaction.reply(
+		`<@${interaction.member.id}> has marked this thread as answered. It will be archived after 1 day of inactivity.`
+	);
+};
+
+const canArchiveForumThread = (ownerId, interaction) => {
+	return ownerId === interaction.member.id ||
+				interaction.member.roles.cache.some(role => rolesThatCanArchiveThreads.includes(role.id)) ||
+				isThreadManager(interaction.channel, interaction.member);
+};
+
+const canArchiveDefaultThread = (starterMessage, interaction) => {
 	return starterMessage.author.id === interaction.member.id ||
 				interaction.member.roles.cache.some(role => rolesThatCanArchiveThreads.includes(role.id)) ||
 				isThreadManager(interaction.channel, interaction.member);
+};
+
+const getStarterMessage = async (thread) => {
+	try {
+		return await thread.fetchStarterMessage();
+	} catch {
+		return undefined;
+	}
 };

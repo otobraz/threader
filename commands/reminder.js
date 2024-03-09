@@ -8,7 +8,7 @@ module.exports = {
 			reminder(thread)
 				.then(() => message.delete())
 				.catch((err) => {
-					console.error("I couldn't remind the thread owner for some reason");
+					message.reply("I couldn't remind the thread owner because the starter message was deleted.");
 					console.error(err);
 				});
 		}
